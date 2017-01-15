@@ -121,7 +121,15 @@ public interface ImmutablePosition
      *@return a 64bit hash code
      */
     public long getHashCode();
-    
+
+    /**
+     * Returns a 64bit hash code of the current position, taking into account only the
+     * positions of the pieces, not who's to move etc.
+     *
+     *@return a 64bit hash code
+     */
+    public long getHashCodeForSquares();
+
     /**
      * Returns a 32bit hash code of the current position.
      * 32 bit is not enough to distinguish positions reliably, use only if

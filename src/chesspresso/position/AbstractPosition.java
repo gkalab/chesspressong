@@ -123,14 +123,7 @@ public abstract class AbstractPosition implements ImmutablePosition
 
     public long getHashCode()
     {
-        /*---------- squares ----------*/
-        long hashCode = 0L;
-        for (int sqi=0; sqi < Chess.NUM_OF_SQUARES; sqi++) {
-            int stone = getStone(sqi);
-            if (stone != Chess.NO_STONE) {
-                hashCode ^= s_hashMod[sqi][stone - Chess.MIN_STONE];
-            }
-        }
+        long hashCode = getHashCodeForSquares();
 
         /*---------- castles ----------*/
 //        System.out.println(getCastles());
@@ -160,6 +153,18 @@ public abstract class AbstractPosition implements ImmutablePosition
         return hashCode;
     }
 
+    public long getHashCodeForSquares() {
+    /*---------- squares ----------*/
+        long hashCode = 0L;
+        for (int sqi = 0; sqi < Chess.NUM_OF_SQUARES; sqi++) {
+            int stone = getStone(sqi);
+            if (stone != Chess.NO_STONE) {
+                hashCode ^= s_hashMod[sqi][stone - Chess.MIN_STONE];
+            }
+        }
+        return hashCode;
+    }
+
     public final int hashCode()
     {
         return (int)getHashCode();
@@ -174,7 +179,12 @@ public abstract class AbstractPosition implements ImmutablePosition
     {
         return (obj instanceof ImmutablePosition) && (((ImmutablePosition)obj).getHashCode() == getHashCode());
     }
-    
+
+    public boolean equalPiecesOnSameSquares(Object obj)
+    {
+        return (obj instanceof ImmutablePosition) && (((ImmutablePosition)obj).getHashCodeForSquares() == getHashCodeForSquares());
+    }
+
     /*================================================================================*/
 
     public String getFEN()
