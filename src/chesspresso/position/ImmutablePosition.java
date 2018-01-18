@@ -112,15 +112,6 @@ public interface ImmutablePosition
     
     //======================================================================
     // hash codes
-    
-    /**
-     * Returns a 64bit hash code of the current position.
-     * 64bit should be enough to disnstinguish positions with almost no collisions.
-     * TODO: add reference to paper
-     *
-     *@return a 64bit hash code
-     */
-    public long getHashCode();
 
     /**
      * Returns a 64bit hash code of the current position, taking into account only the
@@ -130,6 +121,15 @@ public interface ImmutablePosition
      */
     public long getHashCodeForSquares();
 
+    /**
+     * Returns a 64bit hash code of the current position.
+     * 64bit should be enough to disnstinguish positions with almost no collisions.
+     * TODO: add reference to paper
+     *
+     *@return a 64bit hash code
+     */
+    public long getHashCode();
+    
     /**
      * Returns a 32bit hash code of the current position.
      * 32 bit is not enough to distinguish positions reliably, use only if

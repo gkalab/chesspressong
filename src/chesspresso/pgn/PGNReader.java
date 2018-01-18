@@ -714,6 +714,7 @@ public final class PGNReader extends PGN {
                 parseNAG();
             } else {
             	newLine = false;
+            	goneBack = false;
                 parseHalfMove();
                 addPreMoveComment(comment);
                 comment = "";

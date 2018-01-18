@@ -132,20 +132,28 @@ public abstract class Chess
     public static final char colToChar(int col)
     {
         final char c[] = {'-', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'};
-        return c[col+1];
+        if (col >= -1 && col < (c.length-1)) {
+            return c[col + 1];
+        } else {
+            return '-';
+        }
         //return String.valueOf('a' + (char)col);
     }
     
     /**
      * Returns the character of a row (rank): '1'..'8'.
      *
-     *@param col the column
+     *@param row the row
      *@return the character representing the column
      */
     public static final char rowToChar(int row)
     {
         final char r[] = {'-', '1', '2', '3', '4', '5', '6', '7', '8'};
-        return r[row+1];
+        if (row >=-1 && row < (r.length-1)) {
+            return r[row + 1];
+        } else {
+            return '-';
+        }
         //return String.valueOf('1' + (char)row);
     }
     
@@ -218,8 +226,8 @@ public abstract class Chess
     /**
      * Converts a col and row character pair to a square index.
      *
-     *@param col the row character
-     *@param row the column character
+     *@param colCh the col character
+     *@param rowCh the row character
      *@return the square index, or <code>NO_SQUARE</code> if an illegal character is passed
      */
     public static final int strToSqi(char colCh, char rowCh)

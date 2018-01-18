@@ -106,6 +106,7 @@ public class Game implements PositionChangeListener
     
     private void setPosition(Position position)
     {
+        position.fixCastlesFlag();
         m_position = position;
         m_position.addPositionChangeListener(this);
         m_cur = 0;
@@ -172,19 +173,20 @@ public class Game implements PositionChangeListener
     public String[] getTags() {return m_header.getTags();}
     
 	public void setTag(String tagName, String tagValue) {
-		String fen = tagValue;
+		String value = tagValue;
 		if (PGN.TAG_FEN.equals(tagName)) {
 			try {
-				setPosition(new Position(fen, false));
+				setPosition(new Position(value, false));
 			} catch (IllegalArgumentException ex) {
-				if (fen.trim().split(" ").length == 4) {
+				if (value.trim().split(" ").length == 4) {
 					// support broken FENs by Shredder
-					fen = fen.trim() + " 0 1";
-					setPosition(new Position(fen, false));
+					value = value.trim() + " 0 1";
+					setPosition(new Position(value, false));
 				}
 			}
+			value = m_position.getFEN();
 		}
-		m_header.setTag(tagName, fen);
+		m_header.setTag(tagName, value);
 	}
     
     public String getEvent()       {return m_header.getEvent();}
