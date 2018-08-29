@@ -293,10 +293,10 @@ public final class Position extends AbstractMoveablePosition
 
     private long[] m_bakStack;
     private int m_bakIndex;
-    private short[] m_moveStack;
+    private char[] m_moveStack;
     private int m_moveStackIndex;
 
-    private short[] m_moves = new short[256];   // buffer for getAllMoves, allocated once for efficiency
+    private char[] m_moves = new char[256];   // buffer for getAllMoves, allocated once for efficiency
 
     /*================================================================================*/
 
@@ -315,7 +315,7 @@ public final class Position extends AbstractMoveablePosition
         if (PROFILE) m_numPositions++;
 
         m_bakStack = new long[4 * bufferLength];  //on average, we need about 3.75 longs to backup a position
-        m_moveStack = new short[bufferLength];
+        m_moveStack = new char[bufferLength];
         clear();
     }
 
@@ -584,7 +584,7 @@ public final class Position extends AbstractMoveablePosition
         if (m_notifyListeners && m_listeners != null) fireToPlayChanged();
     }
 
-    private final void setMove(short move)
+    private final void setMove(char move)
     {
         boolean increaseHalfMoveClock = true;
         int sqiEP = Chess.NO_SQUARE;
@@ -770,7 +770,7 @@ public final class Position extends AbstractMoveablePosition
     private void checkMoveStack()
     {
         if (m_moveStackIndex >= m_moveStack.length) {
-            short[] newMoveStack = new short[m_moveStack.length * 2];
+            char[] newMoveStack = new char[m_moveStack.length * 2];
             System.arraycopy(m_moveStack, 0, newMoveStack, 0, m_moveStack.length);
             m_moveStack = newMoveStack;
         }
@@ -812,13 +812,13 @@ public final class Position extends AbstractMoveablePosition
     }
 
     @Override
-    public void doMove(short move) throws IllegalMoveException
+    public void doMove(char move) throws IllegalMoveException
     {
         doMoveNoMoveListeners(move);
         if (m_notifyListeners && m_changeListeners != null) fireMoveDone(move);
     }
 
-    private final void doMoveNoMoveListeners(short move) throws IllegalMoveException
+    private final void doMoveNoMoveListeners(char move) throws IllegalMoveException
     {
         if (PROFILE) m_numDoMove++;
 
@@ -1100,7 +1100,7 @@ public final class Position extends AbstractMoveablePosition
     }
 
     @Override
-    public short getLastShortMove()
+    public char getLastShortMove()
     {
         return (m_moveStackIndex <= 0 ? Move.NO_MOVE : m_moveStack[m_moveStackIndex - 1]);
     }
@@ -1109,7 +1109,7 @@ public final class Position extends AbstractMoveablePosition
     public Move getLastMove()
     {
         if (m_moveStackIndex == 0) return null;  // =====>
-        short move = m_moveStack[m_moveStackIndex - 1];
+        char move = m_moveStack[m_moveStackIndex - 1];
         boolean wasWhiteMove = (getToPlay() == Chess.BLACK);
         if (Move.isCastle(move)) {
             return Move.createCastle(move, isCheck(), isMate(), wasWhiteMove);  // ======>
@@ -1158,7 +1158,7 @@ public final class Position extends AbstractMoveablePosition
         return Chess.NO_SQUARE;
     }
 
-    public short getPawnMove(int colFrom, int to, int promoPiece)
+    public char getPawnMove(int colFrom, int to, int promoPiece)
     {
 //        if (getColor(from) != getToPlay()) throw new ChIllegalMoveException("Wrong color");
         if (to == getSqiEP()) {
@@ -1177,11 +1177,11 @@ public final class Position extends AbstractMoveablePosition
         }
     }
 
-    public short getNullMove() {
+    public char getNullMove() {
         return Move.NULL_MOVE;
     }
 
-    public short getPieceMove(int piece, int colFrom, int rowFrom, int to)
+    public char getPieceMove(int piece, int colFrom, int rowFrom, int to)
     {
         if (to<0) {
             return Move.ILLEGAL_MOVE;
@@ -1190,7 +1190,7 @@ public final class Position extends AbstractMoveablePosition
         }
     }
 
-    private Move getPieceMoveAndDo(short move) throws IllegalMoveException
+    private Move getPieceMoveAndDo(char move) throws IllegalMoveException
     {
         if (!Move.isValid(move)) throw new IllegalMoveException (move);
 
@@ -1207,7 +1207,7 @@ public final class Position extends AbstractMoveablePosition
         if (bb != 0L) {
             for (long bb2 = bb; bb2 != 0L; bb2 &= bb2 -1) {
                 int tryFrom = getFirstSqi(bb2);
-                short tryMove = Move.getRegularMove(tryFrom, to, isCapturing);
+                char tryMove = Move.getRegularMove(tryFrom, to, isCapturing);
                 doMoveNoMoveListeners(tryMove);
                 if (!isLegal()) {
                     bb = bb & (~ofSquare(tryFrom));
@@ -1592,16 +1592,16 @@ public final class Position extends AbstractMoveablePosition
     }
 
     @Override
-    public short[] getAllMoves()
+    public char[] getAllMoves()
     {
         return getAllMoves(~0L, ~0L);
     }
 
-    private final short[] getAllMoves(long bbTargets, long bbPawnTargets)
+    private final char[] getAllMoves(long bbTargets, long bbPawnTargets)
     {
         if (PROFILE) m_numGetAllMoves++;
 
-        if (bbTargets == 0L) return new short[0];  // =====>
+        if (bbTargets == 0L) return new char[0];  // =====>
 
         int moveIndex = 0;  // TODO: make class?
 
@@ -1628,7 +1628,7 @@ public final class Position extends AbstractMoveablePosition
             moveIndex = getAllPawnMoves(moveIndex, bbPawnTargets);
         }
 
-        short[] onlyTheMoves = new short[moveIndex];
+        char[] onlyTheMoves = new char[moveIndex];
         System.arraycopy(m_moves, 0, onlyTheMoves, 0, moveIndex);
 
         return onlyTheMoves;
@@ -1674,7 +1674,7 @@ public final class Position extends AbstractMoveablePosition
     }
 
     @Override
-    public String getMovesAsString(short[] moves, boolean validateEachMove)
+    public String getMovesAsString(char[] moves, boolean validateEachMove)
     {
         StringBuffer sb = new StringBuffer();
         Move.normalizeOrder(moves);
@@ -1719,23 +1719,23 @@ public final class Position extends AbstractMoveablePosition
     public void fixCastlesFlag() {
         if (getCastles() != NO_CASTLES) {
             int castles = getCastles();
-            if ((getCastles() & WHITE_SHORT_CASTLE) != 0 && !isShortCastleValid(m_whiteKing, Chess.WHITE_ROOK)) {
+            if ((getCastles() & WHITE_SHORT_CASTLE) != 0 && !isShortCastleValid(m_whiteKing, Chess.WHITE_ROOK, true)) {
                 castles &= ~WHITE_SHORT_CASTLE;
             }
-            if ((getCastles() & WHITE_LONG_CASTLE) != 0 && !isLongCastleValid(m_whiteKing, Chess.WHITE_ROOK)) {
+            if ((getCastles() & WHITE_LONG_CASTLE) != 0 && !isLongCastleValid(m_whiteKing, Chess.WHITE_ROOK, true)) {
                 castles &= ~WHITE_LONG_CASTLE;
             }
-            if ((getCastles() & BLACK_SHORT_CASTLE) != 0 && !isShortCastleValid(m_blackKing, Chess.BLACK_ROOK)) {
+            if ((getCastles() & BLACK_SHORT_CASTLE) != 0 && !isShortCastleValid(m_blackKing, Chess.BLACK_ROOK, false)) {
                 castles &= ~BLACK_SHORT_CASTLE;
             }
-            if ((getCastles() & BLACK_LONG_CASTLE) != 0 && !isLongCastleValid(m_blackKing, Chess.BLACK_ROOK)) {
+            if ((getCastles() & BLACK_LONG_CASTLE) != 0 && !isLongCastleValid(m_blackKing, Chess.BLACK_ROOK, false)) {
                 castles &= ~BLACK_LONG_CASTLE;
             }
             setCastles(castles);
         }
     }
 
-    private boolean isShortCastleValid(int kingPosition, short rook) {
+    private boolean isShortCastleValid(int kingPosition, int rook, boolean isWhite) {
         boolean result = false;
         int sqi = kingPosition + 1;
         if (sqi < 64) {
@@ -1743,13 +1743,28 @@ public final class Position extends AbstractMoveablePosition
                 sqi++;
             }
             if (sqi < 64 && getStone(sqi) == rook) {
-                result = true;
+                result = arePiecesInCastlesRow(kingPosition, sqi, isWhite);
             }
         }
         return result;
     }
 
-    private boolean isLongCastleValid(int kingPosition, short rook) {
+    private boolean arePiecesInCastlesRow(int kingPosition, int rookPosition, boolean isWhite) {
+        int sqi_min = 0;
+        int sqi_max = 7;
+        if (!isWhite) {
+            sqi_min = 56;
+            sqi_max = 63;
+        }
+        if (kingPosition <= sqi_max && kingPosition >= sqi_min
+                && rookPosition <= sqi_max && rookPosition >= sqi_min) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    private boolean isLongCastleValid(int kingPosition, int rook, boolean isWhite) {
         boolean result = false;
         int sqi = kingPosition - 1;
         if (sqi >= 0) {
@@ -1757,7 +1772,7 @@ public final class Position extends AbstractMoveablePosition
                 sqi--;
             }
             if (sqi >= 0 && getStone(sqi) == rook) {
-                result = true;
+                result = arePiecesInCastlesRow(kingPosition, sqi, isWhite);
             }
         }
         return result;

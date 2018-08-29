@@ -476,7 +476,7 @@ public final class PGNReader extends PGN {
         return isLastTokenInt();
     }
 
-    private short getLastTokenAsMove() throws PGNSyntaxError {
+    private char getLastTokenAsMove() throws PGNSyntaxError {
         if (DEBUG)
             System.out.println("getLastTokenAsMove " + getLastTokenAsString());
 
@@ -493,7 +493,7 @@ public final class PGNReader extends PGN {
 
         // String s = getLastTokenAsString();
         // if (DEBUG) System.out.println("moveStr= " + s);
-        short move = Move.ILLEGAL_MOVE;
+        char move = Move.ILLEGAL_MOVE;
         if (m_buf[0] == 'O' && m_buf[1] == '-' && m_buf[2] == 'O') {
             if (m_lastTokenLength >= 5 && m_buf[3] == '-' && m_buf[4] == 'O') {
                 move = Move.getLongCastle(m_curGame.getPosition().getToPlay());
@@ -524,10 +524,10 @@ public final class PGNReader extends PGN {
                                             || m_buf[0]=='~' || m_buf[0]=='=')) {
             if (m_buf[0] == 'N') {
                 // novelty
-                m_curGame.addNag((short)146);
+                m_curGame.addNag((char)146);
             } else if (m_buf[0] == 'D') {
                 // diagram
-                m_curGame.addNag((short)201);
+                m_curGame.addNag((char)201);
             }
             move = Move.NO_MOVE;
         } else if (m_lastTokenLength>=2 && (m_buf[0]=='+' || m_buf[0]=='-' || m_buf[0]=='=')) {
@@ -622,7 +622,7 @@ public final class PGNReader extends PGN {
         if (getLastToken() == TOK_NAG_BEGIN) {
             getNextToken();
             if (isLastTokenInt()) {
-                short nag = (short) getLastTokenAsInt();
+                char nag = (char) getLastTokenAsInt();
                 if (nag > 0) {
                     m_curGame.addNag(nag);
                 }
@@ -637,7 +637,7 @@ public final class PGNReader extends PGN {
                 getNextToken();
             } while (getLastToken() == '!' || getLastToken() == '?');
             try {
-                short nag = NAG.ofString(nagSB.toString());
+                char nag = NAG.ofString(nagSB.toString());
                 warning("Direct NAG used " + nagSB.toString() + " -> $" + nag);
                 m_curGame.addNag(nag);
             } catch (IllegalArgumentException ex) {
@@ -648,9 +648,9 @@ public final class PGNReader extends PGN {
         }
     }
 
-    private short parseHalfMove() throws PGNSyntaxError,
+    private char parseHalfMove() throws PGNSyntaxError,
             IOException {
-        short move = 1;
+        char move = 1;
         if (isLastTokenMoveNumber()) {
             while (getNextToken() == TOK_PERIOD);
         }

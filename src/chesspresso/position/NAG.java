@@ -330,7 +330,7 @@ public abstract class NAG
     
     /*================================================================================*/
     
-    public static String getLongString(short nag)
+    public static String getLongString(char nag)
     {
         if (nag >= 0 && nag < LONG_DESCRIPTION.length) {
             return LONG_DESCRIPTION[nag];
@@ -339,12 +339,12 @@ public abstract class NAG
         }
     }
     
-    public static String getShortString(short nag)
+    public static String getShortString(char nag)
     {
         return getShortString(nag, true);
     }
 
-    public static String getShortString(short nag, boolean takeLongIfNull)
+    public static String getShortString(char nag, boolean takeLongIfNull)
     {
         if (nag >= 0 && nag < SHORT_DESCRIPTION.length) {
             if (SHORT_DESCRIPTION[nag] == null) {
@@ -361,10 +361,10 @@ public abstract class NAG
         }
     }
     
-    public static short ofString(String description) throws IllegalArgumentException
+    public static char ofString(String description) throws IllegalArgumentException
     {
         if (description != null) {
-            for (short i=0; i < SHORT_DESCRIPTION.length; i++) {
+            for (char i=0; i < SHORT_DESCRIPTION.length; i++) {
                 if (description.equals(SHORT_DESCRIPTION[i])) return i;
                 if (description.equals(LONG_DESCRIPTION[i])) return i;
             }

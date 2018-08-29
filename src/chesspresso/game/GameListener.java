@@ -24,8 +24,8 @@ import chesspresso.move.Move;
  */
 public interface GameListener
 {
-    public void notifyMove(Move move, short[] nags, String preMoveComment, String postMoveComment, 
-    		int plyNumber, int level);
-    public void notifyLineStart(int level);
-    public void notifyLineEnd(int level);
+    void notifyMove(Move move, char[] nags, String preMoveComment, String postMoveComment,
+                    int plyNumber, int level);
+    void notifyLineStart(int level);
+    void notifyLineEnd(int level);
 }

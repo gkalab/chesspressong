@@ -48,7 +48,7 @@ public class Move
      * Returns the moves in a normalized order such that the same set of moves
      * always yields the same order. Implementation is: short values ascending.
      */
-    public static void normalizeOrder(short[] moves)
+    public static void normalizeOrder(char[] moves)
     {
         java.util.Arrays.sort(moves);
     }
@@ -96,7 +96,7 @@ public class Move
     private final static int PROMOTION_SHIFT          = 12;
 
     // precalculated castles moves
-    public static final short
+    public static final char
         WHITE_SHORT_CASTLE    = CASTLE_MOVE | Chess.E1 << FROM_SHIFT | Chess.G1 << TO_SHIFT,
         WHITE_LONG_CASTLE     = CASTLE_MOVE | Chess.E1 << FROM_SHIFT | Chess.C1 << TO_SHIFT,
         BLACK_SHORT_CASTLE    = CASTLE_MOVE | Chess.E8 << FROM_SHIFT | Chess.G8 << TO_SHIFT,
@@ -106,12 +106,12 @@ public class Move
      * Represents "no move". Set to 0 to allow rapid initialization of arrays
      * to no moves (arrays are initialized to 0 by Java).
      */
-    public static final short NO_MOVE               = SPECIAL_MOVE;      // 0
+    public static final char NO_MOVE               = SPECIAL_MOVE;      // 0
 
     /**
      * Representing an illegal move.
      */
-    public static final short ILLEGAL_MOVE          = SPECIAL_MOVE + 1;  // 1
+    public static final char ILLEGAL_MOVE          = SPECIAL_MOVE + 1;  // 1
     
     /**
      * The range <code>[OTHER_SPECIALS,OTHER_SPECIALS+NUM_OF_OTHER_SPECIALS[</code> is reserved
@@ -119,14 +119,14 @@ public class Move
      * to indicate special conditions when a move is expected. Moves of the
      * range above do not collide with any other moves.
      */
-    public static final short OTHER_SPECIALS        = SPECIAL_MOVE + 16; // first 16 special reserved for future use
+    public static final char OTHER_SPECIALS        = SPECIAL_MOVE + 16; // first 16 special reserved for future use
 
-    public static final short NULL_MOVE             = OTHER_SPECIALS + 4; // 20
+    public static final char NULL_MOVE             = OTHER_SPECIALS + 4; // 20
 
     /**
      * Number of special moves which can be defined.
      */
-    public static final short NUM_OF_OTHER_SPECIALS = NUM_OF_SPECIAL_MOVES - 16;
+    public static final char NUM_OF_OTHER_SPECIALS = NUM_OF_SPECIAL_MOVES - 16;
     
     private static final String
     	NULL_MOVE_STRING = "--",
@@ -154,12 +154,12 @@ public class Move
      *@param toSqi the to square
      *@param capturing whether or not it is a capturing move
      */
-    public static short getRegularMove(int fromSqi, int toSqi, boolean capturing)
+    public static char getRegularMove(int fromSqi, int toSqi, boolean capturing)
     {
         if (capturing) {
-            return (short)(CAPTURING_MOVE | fromSqi << FROM_SHIFT | toSqi << TO_SHIFT | NO_PROMO);
+            return (char)(CAPTURING_MOVE | fromSqi << FROM_SHIFT | toSqi << TO_SHIFT | NO_PROMO);
         } else {
-            return (short)(REGULAR_MOVE   | fromSqi << FROM_SHIFT | toSqi << TO_SHIFT | NO_PROMO);
+            return (char)(REGULAR_MOVE   | fromSqi << FROM_SHIFT | toSqi << TO_SHIFT | NO_PROMO);
         }
     }
 
@@ -171,12 +171,12 @@ public class Move
      *@param capturing whether or not it is a capturing move
      *@param promotionPiece set to a piece if it is a promotion move, set to <code>No_PIECE</code> otherwise
      */
-    public static short getPawnMove(int fromSqi, int toSqi, boolean capturing, int promotionPiece)
+    public static char getPawnMove(int fromSqi, int toSqi, boolean capturing, int promotionPiece)
     {
         if (capturing) {
-            return (short)(CAPTURING_MOVE | fromSqi << FROM_SHIFT | toSqi << TO_SHIFT | s_promo[promotionPiece]);
+            return (char)(CAPTURING_MOVE | fromSqi << FROM_SHIFT | toSqi << TO_SHIFT | s_promo[promotionPiece]);
         } else {
-            return (short)(REGULAR_MOVE   | fromSqi << FROM_SHIFT | toSqi << TO_SHIFT | s_promo[promotionPiece]);
+            return (char)(REGULAR_MOVE   | fromSqi << FROM_SHIFT | toSqi << TO_SHIFT | s_promo[promotionPiece]);
         }
     }
 
@@ -186,9 +186,9 @@ public class Move
      *@param fromSqi the from square
      *@param toSqi the to square
      */
-    public static short getEPMove(int fromSqi, int toSqi)
+    public static char getEPMove(int fromSqi, int toSqi)
     {
-        return (short)(CAPTURING_MOVE | fromSqi << FROM_SHIFT | toSqi << TO_SHIFT | EP_MOVE);
+        return (char)(CAPTURING_MOVE | fromSqi << FROM_SHIFT | toSqi << TO_SHIFT | EP_MOVE);
     }
 
     /**
@@ -196,7 +196,7 @@ public class Move
      *
      *@param toPlay for which color
      */
-    public static short getShortCastle(int toPlay)
+    public static char getShortCastle(int toPlay)
     {
         return (toPlay == Chess.WHITE ? WHITE_SHORT_CASTLE : BLACK_SHORT_CASTLE);
     }
@@ -206,34 +206,34 @@ public class Move
      *
      *@param toPlay for which color
      */
-    public static short getLongCastle(int toPlay)
+    public static char getLongCastle(int toPlay)
     {
         return (toPlay == Chess.WHITE ? WHITE_LONG_CASTLE : BLACK_LONG_CASTLE);
     }
 
     /*================================================================================*/
 
-    public final static int getFromSqi       (short move) {return (move >> FROM_SHIFT) & 0x3F;}
-    public final static int getToSqi         (short move) {return (move >> TO_SHIFT)   & 0x3F;}
+    public final static int getFromSqi       (char move) {return (move >> FROM_SHIFT) & 0x3F;}
+    public final static int getToSqi         (char move) {return (move >> TO_SHIFT)   & 0x3F;}
     
-    public final static boolean isCapturing  (short move) {return (move & TYPE_MASK) == CAPTURING_MOVE;}
+    public final static boolean isCapturing  (char move) {return (move & TYPE_MASK) == CAPTURING_MOVE;}
     
-    public final static boolean isPromotion  (short move) {int promo = move & PROMO_MASK; return promo == PROMO_QUEEN || promo == PROMO_ROOK || promo == PROMO_BISHOP || promo == PROMO_KNIGHT;}  // slow but safe
-    public final static int getPromotionPiece(short move) {int promo = move & PROMO_MASK; for (int piece=0; piece<=Chess.MAX_PIECE; piece++) {if (s_promo[piece] == promo) return piece;} return Chess.NO_PIECE;}
+    public final static boolean isPromotion  (char move) {int promo = move & PROMO_MASK; return promo == PROMO_QUEEN || promo == PROMO_ROOK || promo == PROMO_BISHOP || promo == PROMO_KNIGHT;}  // slow but safe
+    public final static int getPromotionPiece(char move) {int promo = move & PROMO_MASK; for (int piece=0; piece<=Chess.MAX_PIECE; piece++) {if (s_promo[piece] == promo) return piece;} return Chess.NO_PIECE;}
     
-    public final static boolean isEPMove     (short move) {return (move & PROMO_MASK) == EP_MOVE;}
+    public final static boolean isEPMove     (char move) {return (move & PROMO_MASK) == EP_MOVE;}
     
-    public static boolean isCastle           (short move) {return (move & PROMO_MASK) == CASTLE_MOVE;}
-    public static boolean isShortCastle      (short move) {return  move == WHITE_SHORT_CASTLE | move == BLACK_SHORT_CASTLE;}
-    public static boolean isLongCastle       (short move) {return  move == WHITE_LONG_CASTLE  | move == BLACK_LONG_CASTLE;}
+    public static boolean isCastle           (char move) {return (move & PROMO_MASK) == CASTLE_MOVE;}
+    public static boolean isShortCastle      (char move) {return  move == WHITE_SHORT_CASTLE | move == BLACK_SHORT_CASTLE;}
+    public static boolean isLongCastle       (char move) {return  move == WHITE_LONG_CASTLE  | move == BLACK_LONG_CASTLE;}
     
-    public static boolean isSpecial          (short move) {return move!=NULL_MOVE && (move & PROMO_MASK) == SPECIAL_MOVE;}
-    public static boolean isValid            (short move) {return move==NULL_MOVE || (move & PROMO_MASK) != SPECIAL_MOVE;}
-    public static boolean isNullMove         (short move) {return move==NULL_MOVE;}
+    public static boolean isSpecial          (char move) {return move!=NULL_MOVE && (move & PROMO_MASK) == SPECIAL_MOVE;}
+    public static boolean isValid            (char move) {return move==NULL_MOVE || (move & PROMO_MASK) != SPECIAL_MOVE;}
+    public static boolean isNullMove         (char move) {return move==NULL_MOVE;}
     
     /*================================================================================*/
 
-    public static String getBinaryString(short move)
+    public static String getBinaryString(char move)
     {
         StringBuffer sb = new StringBuffer();
         for (int i=15; i>=0; i--) {
@@ -245,10 +245,10 @@ public class Move
     /**
      * Returns a string representation of the move.
      *
-     *@param the move
+     *@param move the move
      *@return the string representation, e.g. e2xf4
      */
-    public static String getString(short move)
+    public static String getString(char move)
     {
         if      (move == NO_MOVE)          return "<no move>";
         else if (move == ILLEGAL_MOVE)     return "<illegal move>";
@@ -286,10 +286,10 @@ public class Move
      *@param move a castling move to based upon, must be a castling move
      *@param isCheck whether the move gives a check
      *@param isMate whether the move sets mate
-     *@param isWhite whether it is a white move
+     *@param whiteMove whether it is a white move
      *@return the castle move
      */
-    public static Move createCastle(short move, boolean isCheck, boolean isMate, boolean whiteMove)
+    public static Move createCastle(char move, boolean isCheck, boolean isMate, boolean whiteMove)
     {
         return new Move(move, Chess.KING, Chess.NO_COL, Chess.NO_ROW, isCheck, isMate, whiteMove);
     }
@@ -300,7 +300,7 @@ public class Move
      *@param toPlay the moving player
      *@param isCheck whether the move gives a check
      *@param isMate whether the move sets mate
-     *@param isWhite whether it is a white move
+     *@param whiteMove whether it is a white move
      *@return the castle move
      */
     public static Move createShortCastle(int toPlay, boolean isCheck, boolean isMate, boolean whiteMove)
@@ -314,7 +314,7 @@ public class Move
      *@param toPlay the moving player
      *@param isCheck whether the move gives a check
      *@param isMate whether the move sets mate
-     *@param isWhite whether it is a white move
+     *@param whiteMove whether it is a white move
      *@return the castle move
      */
     public static Move createLongCastle(int toPlay, boolean isCheck, boolean isMate, boolean whiteMove)
@@ -338,7 +338,7 @@ public class Move
     private static final int MOVING_MUL      = 0x00010000;
     private static final int MOVING_MASK     = 0x00070000;
     
-    private short m_move;   
+    private char m_move;
     private int m_info;
 
     /*================================================================================*/
@@ -352,9 +352,9 @@ public class Move
      *@param rowFrom rank if should be taken for SAN, <code>NO_ROW</code> otherwise
      *@param isCheck whether the move gives a check
      *@param isMate whether the move sets mate
-     *@param isWhite whether it is a white move
+     *@param isWhiteMove whether it is a white move
      */
-    public Move(short move, int movingPiece, int colFrom, int rowFrom, boolean isCheck, boolean isMate, boolean isWhiteMove)
+    public Move(char move, int movingPiece, int colFrom, int rowFrom, boolean isCheck, boolean isMate, boolean isWhiteMove)
     {
         m_move = move;
         m_info =
@@ -368,7 +368,7 @@ public class Move
     
     /*================================================================================*/
     
-    public short getShortMoveDesc()     {return (short)m_move;}
+    public char getShortMoveDesc()     {return m_move;}
     public int getPromo()               {return Move.getPromotionPiece(m_move);}
     public int getFromSqi()             {return Move.getFromSqi(m_move);}
     public int getToSqi()               {return Move.getToSqi(m_move);}

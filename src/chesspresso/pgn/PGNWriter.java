@@ -113,7 +113,7 @@ public class PGNWriter extends PGN
             private boolean needsMoveNumber = true;
 
             @Override
-			public void notifyMove(Move move, short[] nags, String preMoveComment, String postMoveComment,
+			public void notifyMove(Move move, char[] nags, String preMoveComment, String postMoveComment,
             		int plyNumber, int level)
             {
 				if (preMoveComment != null) {

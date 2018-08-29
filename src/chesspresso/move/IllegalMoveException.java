@@ -23,12 +23,12 @@ package chesspresso.move;
  */
 public class IllegalMoveException extends Exception
 {
-    public IllegalMoveException(short move)
+    public IllegalMoveException(char move)
     {
         super ("Illegal move: " + Move.getString(move));
     }    
 
-    public IllegalMoveException(short move, String msg)
+    public IllegalMoveException(char move, String msg)
     {
         super ("Illegal move: " + Move.getString(move) + ": " + msg);
     }    

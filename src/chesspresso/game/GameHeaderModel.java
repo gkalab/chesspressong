@@ -60,8 +60,8 @@ public class GameHeaderModel
     /*================================================================================*/
     
     private String[] m_standardTags;
-    private LinkedList m_otherTags;
-    private LinkedList m_otherTagValues;
+    private LinkedList<String> m_otherTags;
+    private LinkedList<String> m_otherTagValues;
     private long m_long;
     
     /*================================================================================*/
@@ -132,7 +132,8 @@ public class GameHeaderModel
         } else if (!"PlyCount".equals(tagName)) {
 //            System.out.println(tagName + "=" + tagValue);
             if (m_otherTags == null) {
-                m_otherTags = new LinkedList(); m_otherTagValues = new LinkedList();
+                m_otherTags = new LinkedList<>();
+                m_otherTagValues = new LinkedList<>();
             }
             index = m_otherTags.indexOf(tagName);
             if (index == -1) {

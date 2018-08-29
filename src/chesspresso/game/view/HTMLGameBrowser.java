@@ -70,7 +70,7 @@ public class HTMLGameBrowser implements GameListener
         m_posData.append(");\n");
     }
 
-    public void notifyMove(Move move, short[] nags, String preMoveComment, String postMoveComment, 
+    public void notifyMove(Move move, char[] nags, String preMoveComment, String postMoveComment, 
     		int plyNumber, int level)
     {
         ImmutablePosition pos = m_game.getPosition();

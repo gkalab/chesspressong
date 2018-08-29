@@ -19,7 +19,7 @@ import chesspresso.move.IllegalMoveException;
 import chesspresso.move.Move;
 
 /**
- *
+ * 
  * @author Bernhard Seybold
  * @version $Revision: 1.1 $
  */
@@ -32,7 +32,7 @@ public abstract class AbstractMoveablePosition extends AbstractMutablePosition
 	}
 
 	@Override
-	public short getMove(int from, int to, int promoPiece) {
+	public char getMove(int from, int to, int promoPiece) {
 		if (getColor(from) != getToPlay())
 			return Move.ILLEGAL_MOVE; // =====>
 		int piece = getPiece(from);

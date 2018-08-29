@@ -16,9 +16,6 @@ package chesspresso.position;
 
 
 import chesspresso.*;
-import java.util.*;
-import chesspresso.move.Move;
-import chesspresso.move.IllegalMoveException;
 
 
 /**
@@ -229,7 +226,7 @@ public abstract class AbstractMutablePosition extends AbstractPosition implement
         }
     }
     
-    protected void fireMoveDone(short move)
+    protected void fireMoveDone(char move)
     {
         if (m_notifyListeners && m_changeListeners != null) {
             for (int i=0; i<m_changeListeners.length; i++) {

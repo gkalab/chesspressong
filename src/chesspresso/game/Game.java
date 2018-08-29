@@ -130,7 +130,7 @@ public class Game implements PositionChangeListener
     {
         if (m_changeListeners != null) {
             for (Iterator<GameModelChangeListener> it=m_changeListeners.iterator(); it.hasNext(); ) {
-                ((GameModelChangeListener)it.next()).moveModelChanged(this);
+                it.next().moveModelChanged(this);
             }
         }
     }
@@ -139,13 +139,13 @@ public class Game implements PositionChangeListener
     {
     }
     
-    public void notifyMoveDone(ImmutablePosition position, short move)
+    public void notifyMoveDone(ImmutablePosition position, char move)
     {
         if (DEBUG) System.out.println("ChGame: move made in position " + move);
         
         if (!m_ignoreNotifications) {
             if (!m_alwaysAddLine) {
-                short[] moves = getNextShortMoves();
+                char[] moves = getNextShortMoves();
                 for (int i=0; i<moves.length; i++) {
                     if (moves[i] == move) {
                         m_cur = m_moves.goForward(m_cur, i);
@@ -286,10 +286,10 @@ public class Game implements PositionChangeListener
         }
     }
     
-    public boolean hasNag(short nag)       {return m_moves.hasNag(m_cur, nag);}
-    public short[] getNags()               {return m_cur == 0 ? null : m_moves.getNags(m_cur);}
-    public void addNag(short nag)          {m_moves.addNag(m_cur, nag); fireMoveModelChanged();}
-    public void removeNag(short nag)       {if (m_moves.removeNag(m_cur, nag)) fireMoveModelChanged();}
+    public boolean hasNag(char nag)       {return m_moves.hasNag(m_cur, nag);}
+    public char[] getNags()               {return m_cur == 0 ? null : m_moves.getNags(m_cur);}
+    public void addNag(char nag)          {m_moves.addNag(m_cur, nag); fireMoveModelChanged();}
+    public void removeNag(char nag)       {if (m_moves.removeNag(m_cur, nag)) fireMoveModelChanged();}
     
     public String getComment()             {return m_moves.getComment(m_cur);}
     public String getPreMoveComment()      {return m_moves.getPreMoveComment(m_cur);}
@@ -326,14 +326,14 @@ public class Game implements PositionChangeListener
         return getNextMove(0);
     }
     
-    public short getNextShortMove()
+    public char getNextShortMove()
     {
         return getNextShortMove(0);
     }
     
     public Move getNextMove(int whichLine)
     {
-        short shortMove = m_moves.getMove(m_moves.goForward(m_cur, whichLine));
+        char shortMove = m_moves.getMove(m_moves.goForward(m_cur, whichLine));
         if (shortMove == GameMoveModel.NO_MOVE) return null;  // =====>
         try {
             m_position.setNotifyListeners(false);
@@ -348,7 +348,7 @@ public class Game implements PositionChangeListener
         }
     }
     
-    public short getNextShortMove(int whichLine)
+    public char getNextShortMove(int whichLine)
     {
         return m_moves.getMove(m_moves.goForward(m_cur, whichLine));
     }
@@ -357,9 +357,9 @@ public class Game implements PositionChangeListener
     
     public int getNumOfNextMoves() {return m_moves.getNumOfNextMoves(m_cur);}
     
-    public short[] getNextShortMoves()
+    public char[] getNextShortMoves()
     {
-        short[] moves = new short[m_moves.getNumOfNextMoves(m_cur)];
+        char[] moves = new char[m_moves.getNumOfNextMoves(m_cur)];
         for (int i=0; i<moves.length; i++) {
             moves[i] = m_moves.getMove(m_moves.goForward(m_cur, i));
         }
@@ -371,7 +371,7 @@ public class Game implements PositionChangeListener
         m_position.setNotifyListeners(false);
         Move[] moves = new Move[m_moves.getNumOfNextMoves(m_cur)];
         for (int i=0; i<moves.length; i++) {
-            short move = m_moves.getMove(m_moves.goForward(m_cur, i));
+            char move = m_moves.getMove(m_moves.goForward(m_cur, i));
             try {
                 m_position.doMove(move);
                 moves[i] = m_position.getLastMove();
@@ -473,7 +473,7 @@ public class Game implements PositionChangeListener
         if (DEBUG) System.out.println("goForward " + whichLine);
         
         int index = m_moves.goForward(m_cur, whichLine);
-        short shortMove = m_moves.getMove(index);
+        char shortMove = m_moves.getMove(index);
         if (DEBUG) System.out.println("  move = " + Move.getString(shortMove));
         if (shortMove != GameMoveModel.NO_MOVE) {
             try {
@@ -498,7 +498,7 @@ public class Game implements PositionChangeListener
         if (DEBUG) System.out.println("goForwardAndGetMove " + whichLine);
         
         int index = m_moves.goForward(m_cur, whichLine);
-        short shortMove = m_moves.getMove(index);
+        char shortMove = m_moves.getMove(index);
         if (DEBUG) System.out.println("  move = " + Move.getString(shortMove));
         if (shortMove != GameMoveModel.NO_MOVE) {
             try {
