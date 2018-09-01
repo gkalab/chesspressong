@@ -131,7 +131,7 @@ public class PGNWriter extends PGN
 
                 if (nags != null) {
                     for (int i=0; i < nags.length; i++) {
-                        print(String.valueOf(TOK_NAG_BEGIN) + String.valueOf(nags[i]), true);
+                        print(String.valueOf(TOK_NAG_BEGIN) + String.valueOf((int)nags[i]), true);
                     }
                 }
                 if (postMoveComment != null) print(TOK_COMMENT_BEGIN + postMoveComment + TOK_COMMENT_END, true);
